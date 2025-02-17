@@ -1,0 +1,15 @@
+{
+    "name": "T3 Playlist Generator",
+    "description": "Highlight Text and Generate Playlist",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+    "default_popup": "popup.html"
+  },
+    "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["script.js"]
+    }
+    ]
+  }
