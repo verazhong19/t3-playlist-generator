@@ -12,5 +12,6 @@
       "js": ["script.js"]
     }
     ],
-    "permissions": ["storage"]
+    "permissions": ["storage"],
+    "host_permissions": ["https://api.openai.com/"]
   }
