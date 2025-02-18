@@ -1,9 +1,29 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <script src="script.js"></script>
-    </head>
-  <body>
-    <div id="textDisplay">No text selected yet.</div>
-    <button onclick="test()">test</button>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Highlighted Text</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 10px;
+      width: 250px;
+    }
+    #textDisplay, #gptResponse {
+      background: #f1f1f1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      word-wrap: break-word;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Highlighted Text</h2>
+  <div id="textDisplay">No text selected yet.</div>
+  <button id="promptButton">Send to GPT</button>
+  <h2>GPT Response</h2>
+  <div id="gptResponse">Awaiting response...</div>
+  <script src="popup.js"></script>
+</body>
 </html>

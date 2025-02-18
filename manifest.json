@@ -11,5 +11,6 @@
       "matches": ["<all_urls>"],
       "js": ["script.js"]
     }
-    ]
+    ],
+    "permissions": ["storage"]
   }
