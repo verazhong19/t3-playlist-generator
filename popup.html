@@ -7,7 +7,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 10px;
-      width: 250px;
+      width: 500px;
     }
     #textDisplay, #gptResponse {
       background: #f1f1f1;
@@ -23,7 +23,11 @@
   <div id="textDisplay">No text selected yet.</div>
   <button id="promptButton">Send to GPT</button>
   <h2>GPT Response</h2>
-  <div id="gptResponse">Awaiting response...</div>
+  <div id="gptResponse">
+    Awaiting response...
+  </div>
+  <ul id="playlist"></ul>
+  <div id="message"></div>
   <script src="popup.js"></script>
 </body>
 </html>
