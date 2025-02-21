@@ -40,14 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
           messages: [
             {
               role: "developer", 
-              content: "You are a music curator that likes to craft narrative playlists based on lyrics. Your playlists are formatted as CSVs. The CSV headers should be TITLE, ARTIST. Before the title, put 'T: '. Before the artist, put 'A:'. Put a comma after all elements and put a space after all commas. At the very end of the message, write 'T:'."
+              content: "You are a music curator that likes to craft narrative playlists based on lyrics. Your playlists are formatted as CSVs. Do not write anything before the CSV. The CSV headers should be TITLE, ARTIST. Before the title, put 'T: '. Before the artist, put 'A:'. Put a comma after all elements and put a space after all commas. At the very end of the message, write 'T:'."
             },
             { 
               role: "user", 
-              content: "Give me 10 song reccommendations based on this text. Only use songs that have been on a Top 100 chart. Give me the title and artist." + prompt 
+              content: "Give me 10 song reccommendations with lyrics or titles that are related to the main ideas of this text. Identify and match the time period and emotional themes of the text. Give me the title and artist. Do not repeat songs." + prompt 
             }
             ],
-          max_tokens: 150
+          max_tokens: 200
         })
       });
   
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const songText = document.createElement("a");
         songText.textContent = songInfo[0] + " by " + songInfo[1];
         songText.href = songInfo[2];
-        songText.rel = 'noopener noreferrer';
+        // songText.rel = 'noopener noreferrer';
 
         songli.appendChild(songText);
 
