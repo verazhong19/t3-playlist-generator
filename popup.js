@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const songText = document.createElement("a");
         songText.textContent = songInfo[0] + " by " + songInfo[1];
         songText.href = songInfo[2];
+        songText.target = "_blank";
         // songText.rel = 'noopener noreferrer';
 
         songli.appendChild(songText);
