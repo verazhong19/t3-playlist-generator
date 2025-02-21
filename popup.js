@@ -80,7 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   async function generatePlaylist(message) {
     const playlistDiv = document.getElementById("playlist"); 
-    const messageDiv = document.getElementById("message");  
+    const messageDiv = document.getElementById("message"); 
+    
+    playlistDiv.innerHTML = "";
 	
    while (message.indexOf("T:") != -1 && message.indexOf("A:") != -1) {
        
