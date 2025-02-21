@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function callGPT(prompt) {
     const responseDiv = document.getElementById("gptResponse");
     responseDiv.textContent = "Generating playlist..."; 
-
+    
     const apiKey = ''; // Replace with your API key
   
     try {
@@ -102,8 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function callSpotify(lookup) {
-    const accessToken = ''; // Replace with your Spotify access token
     const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(lookup)}&type=track&limit=1`;
+
+     // Replace with your Spotify client info
+    const clientID = '';
+    const clientSecret = '';
+
+    const accessToken = await getAccessToken(clientID, clientSecret);
 
     const response = await fetch(url, {
         headers: {
@@ -119,6 +124,33 @@ document.addEventListener('DOMContentLoaded', () => {
         return [track.name, track.artists.map(a => a.name).join(', '), track.external_urls.spotify];
     } else {
         console.log('Track not found.');
-        return "track not found";
+        return "Track not found.";
     }
+  }
+
+  async function getAccessToken(clientID, clientSecret) {
+    const url = `https://accounts.spotify.com/api/token`;
+
+    
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type': `application/x-www-form-urlencoded`
+        },
+        body: `grant_type=client_credentials&client_id=${clientID}&client_secret=${clientSecret}`
+      });
+
+      const data = await response.json();
+      if (data.access_token) {
+        const accessToken = data.access_token;
+        console.log(accessToken);
+  
+        return accessToken;
+      } else {
+        return "Could not fetch access token.";
+      }
+    } catch (error) {
+      return "error";
+    }    
   }
