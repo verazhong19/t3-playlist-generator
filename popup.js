@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get("highlightedText", (result) => {
       displayDiv.textContent = result.highlightedText || "No text selected yet.";
     });
+
+    chrome.storage.local.get("lastPlaylist", (result) => {
+      if (result.lastPlaylist) {
+        responseDiv.textContent = "Here is your last generated playlist:";
+        generatePlaylist(result.lastPlaylist);
+      }
+    });
   
     // When the button is clicked, send the highlighted text to the GPT
     promptButton.addEventListener("click", () => {
@@ -54,8 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
   
       if (data.choices && data.choices.length > 0) {
+        const gptResponse = data.choices[0].message.content;
+
+        chrome.storage.local.set({ lastPlaylist: gptResponse }, () => {
+          console.log("Playlist stored in local storage.");
+        });
+
         responseDiv.textContent = "Here is your playlist:";
-        generatePlaylist(data.choices[0].message.content);
+        generatePlaylist(gptResponse);
       } else {
         responseDiv.textContent = "No response received.";
       }
