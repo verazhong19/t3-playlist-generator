@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function callGPT(prompt) {
     const responseDiv = document.getElementById("gptResponse");
-    responseDiv.textContent = "Awaiting response...";
-  
+    responseDiv.textContent = "Generating playlist..."; 
+
     const apiKey = ''; // Replace with your API key
   
     try {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
           messages: [
             {
               role: "developer", 
-              content: "You are a music curator that likes to craft narrative playlists based on lyrics. Your playlists are formatted as CSVs. The CSV headers should be TITLE, ARTIST. Before the title, put 'T: '. Before the artist, put 'A:'. Put a comma after all elements and put a space after all commas."
+              content: "You are a music curator that likes to craft narrative playlists based on lyrics. Your playlists are formatted as CSVs. The CSV headers should be TITLE, ARTIST. Before the title, put 'T: '. Before the artist, put 'A:'. Put a comma after all elements and put a space after all commas. At the very end of the message, write 'T:'."
             },
             { 
               role: "user", 
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	
    while (message.indexOf("T:") != -1 && message.indexOf("A:") != -1) {
        
-      const song = document.createElement("li");
+      const songli = document.createElement("li");
       
       var titleStart = message.indexOf("T:") + 3;
       var titleEnd = message.indexOf("A:") - 2;
@@ -82,12 +82,43 @@ document.addEventListener('DOMContentLoaded', () => {
       	var artistStart = message.indexOf("A:") + 3;
         var artistEnd = message.indexOf("T:") - 2;
         var artist = message.substring(artistStart, artistEnd);
+        if (artist.indexOf(',') != -1) {
+          artist = artist.substring(0, artist.indexOf(','));
+        }
         message = message.substring(message.indexOf("T:"));
-      	const songText = document.createTextNode(title + " by " + artist);
-      
-        song.appendChild(songText);
 
-        playlistDiv.appendChild(song);
+        const songInfo = await callSpotify(title + " " + artist);
+
+        const songText = document.createElement("a");
+        songText.textContent = songInfo[0] + " by " + songInfo[1];
+        songText.href = songInfo[2];
+        songText.rel = 'noopener noreferrer';
+
+        songli.appendChild(songText);
+
+        playlistDiv.appendChild(songli);
       }
     } 
+  }
+
+  async function callSpotify(lookup) {
+    const accessToken = ''; // Replace with your Spotify access token
+    const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(lookup)}&type=track&limit=1`;
+
+    const response = await fetch(url, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    const data = await response.json();
+    if (data.tracks.items.length > 0) {
+        const track = data.tracks.items[0];
+        // console.log(`Found track: ${track.name} by ${track.artists.map(a => a.name).join(', ')}`);
+        // console.log(`Spotify URL: ${track.external_urls.spotify}`);
+        return [track.name, track.artists.map(a => a.name).join(', '), track.external_urls.spotify];
+    } else {
+        console.log('Track not found.');
+        return "track not found";
+    }
   }
